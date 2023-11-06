@@ -1,0 +1,112 @@
+using System;
+using System.Collections.Generic;
+using System.Xml.Linq;
+
+namespace StudentWork
+{
+
+    public class Student
+    {
+        public int stuno { get; set; }
+        public string name { get; set; }
+
+        public override string ToString()
+        {
+            return $"Student Number: {stuno}, Name: {name}";
+        }
+    }
+
+    public class StudentManage
+    {
+        private List<Student> students;
+
+        public StudentManage()
+        {
+            students = new List<Student>();
+        }
+
+        public void Add(Student student)
+        {
+            students.Add(student);
+        }
+
+        public void Update(int stuno, Student updatedStudent)
+        {
+            Student student = students.Find(s => s.stuno == stuno);
+            if (student != null)
+            {
+                student.name = updatedStudent.name;
+            }
+        }
+
+        public void Delete(int stuno)
+        {
+            Student student = students.Find(s => s.stuno == stuno);
+            if (student != null)
+            {
+                students.Remove(student);
+            }
+        }
+
+        public Student Get(int stuno)
+        {
+            return students.Find(s => s.stuno == stuno);
+        }
+
+        public void PrintStudents()
+        {
+            foreach (Student student in students)
+            {
+                Console.WriteLine(student);
+            }
+        }
+    }
+
+    public class Program
+    {
+        public static void Main(string[] args)
+        {
+            StudentManage studentManage = new StudentManage();
+
+            Console.WriteLine("添加学生");
+            Student student1 = new Student { stuno = 2015101, name = "Zhangsan" };
+            Student student2 = new Student { stuno = 2015102, name = "Wangwu" };
+            studentManage.Add(student1);
+            studentManage.Add(student2);
+            studentManage.PrintStudents();
+
+            Console.WriteLine("修改学生");
+            Student updatedStudent = new Student { stuno = 2015101, name = "Lisi" };
+            studentManage.Update(101, updatedStudent);
+            studentManage.PrintStudents();
+
+            Console.WriteLine("删除学生");
+            studentManage.Delete(101);
+            studentManage.PrintStudents();
+
+            Console.WriteLine("查询学生student1");
+            Student student = studentManage.Get(101);
+            if (student != null)
+            {
+                Console.WriteLine(student);
+            }
+            else
+            {
+                Console.WriteLine("Student not found.");
+            }
+            Console.WriteLine("查询学生student2");
+            student = studentManage.Get(102);
+            if (student != null)
+            {
+                Console.WriteLine(student);
+            }
+            else
+            {
+                Console.WriteLine("Student not found.");
+            }
+            Console.WriteLine("遍历所有学");
+            studentManage.PrintStudents();
+
+        }
+    }
+}
